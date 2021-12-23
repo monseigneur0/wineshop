@@ -1,0 +1,183 @@
+<html lang="ko">
+    {% load static %}
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.min.js" integrity="sha384-skAcpIdS7UcVUC05LJ9Dxay8AXcDYfBJqt1CJ85S/CFujBsIzCIv+l9liuYLaMQ/" crossorigin="anonymous"></script>
+        <meta charset="UTF-8">
+        <title>Ping</title>
+        <!-- <div class="container"> -->
+            <!-- <div class="row"> -->
+                <nav class="navbar navbar-expand-lg navbar-light bg-light ">
+                    <div class="container">
+                        <a class="navbar-brand" href="/happy/ping">와인 모임</a>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav me-auto mb-1 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="/happy/ping">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link btn-danger" href="/happy/ping">ping</a>
+                            </li>
+                            </ul>
+                            <!-- 네비바 로그인 회원가입용 버튼 -->
+                            <!-- <form class="flex"> 
+                            <input class="form-control me-2" type="text" id="id" placeholder="아이디" name="user_id" aria-label="Search">
+                            <input class="form-control me-2" type="password" id="pw" placeholder="비밀번호" name="pwd">
+                                <button class="btn btn-outline-danger" type="button" id="logins" onclick="ajax();">로그인</button>
+                                <a class="btn btn-outline-danger" type="button" id="joins" href="/happy/join">회원가입</a>
+                            </form> -->
+                            <div class="justify-content-end">{{ User.username }}님</div>
+                            <div class="item mt-3 ms-2">
+                                <form action="/happy/logout" d="psch1" method="post">
+                                    {% csrf_token %}
+                                    <button>로그아웃</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+                <!-- offcanvas 로그인툴 -->
+                <!-- toggle end(right) off canvas plus login -->
+                <!-- <div class="d-flex flex-row-reverse bd-highlight">
+                    <button class="btn btn-danger " type="button" id="loginss" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">Login</button>
+                    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasTop" aria-labelledby="offcanvasTopLabel">
+                        <div class="offcanvas-header">
+                            <h5 id="offcanvasTopLabel">Login</h5>
+                            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                        </div>
+                        <div class="offcanvas-body">
+                            <form class="flex"> 
+                                <input class="form-control me-2" type="text" id="id" placeholder="아이디" name="user_id" aria-label="Search">
+                                <input class="form-control me-2" type="password" id="pw" placeholder="비밀번호" name="pwd">    
+                                <button class="btn btn-outline-danger" type="button" id="logins" onclick="ajax();">로그인</button>
+                                <a class="btn btn-outline-danger" type="button" id="joins" href="/happy/join">회원가입</a>
+                                <div id="my_div"></div>
+
+                            </form>
+                        </div>
+                    </div>
+                    <a class="btn btn-outline-danger" type="button" id="joinss" href="/happy/join">회원가입</a>
+                    <div id="my_divs"></div>
+                </div> -->
+    </head>
+
+    <body>
+        <div class="container">
+            <div class="row ">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <h4 class="mb-3">PING</h4>
+                            <form role="form" action="#" method="post">
+                                <div class="form-group">
+                                    <input type="hidden" name="no1" value=1 >
+                                    {% csrf_token %}
+                                    <button class="btn btn-success btn-lg">1번</button>
+                                </div>
+                            </form>
+                            <form action="#"  method="post">
+                                <div class="form-group">
+                                    <input type="hidden" name="no2" value=2 >
+                                    {% csrf_token %}
+                                    <button class="btn btn-danger btn-lg" >2번</button>
+                                </div>
+                            </form>
+                            <form action="#" method="post">
+                                <div class="form-group">
+                                    <input type="hidden" name="no3" value=3 >
+                                    {% csrf_token %}
+                                    <button class="btn btn-primary btn-lg" >3번</button>
+                                </div>
+                            </form>
+                            <form action="#" name="nocheck" method="post">
+                                <div class="form-group">
+                                    {% csrf_token %}
+                                    <button>진행 상황 확인</button>
+                                </div>
+                            </form>
+                            {% if User.teachers == "T" %}
+                                <form action="#" method="post">
+                                    <input type="hidden" name="pingstart" value=0>
+                                    {% csrf_token %}
+                                    <button class="btn-lg">핑 시작</button>
+                                </form>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-10">
+                            <div class="d-flex flex-wrap text-white bg-light mt-5"> 
+                                {% for user in userss %}
+                                {% if user.ping_num == 0 and user.teachers == "S" %}
+                                    <button type="button" class="m-1 p-2 btn btn-secondary col-2">{{ user.username }} / {{ user.ping_num }}  </button>
+                                        
+                                {% endif %}
+                                {% endfor %}
+                                {% for user in userss %}
+                                {% if user.ping_num == 1 and user.teachers == "S" %}
+                                    <button type="button" class="m-1 p-2 btn btn-success col-2">{{ user.username }} / {{ user.ping_num }}  </button>
+                                        
+                                {% endif %}
+                                {% endfor %}
+                
+                                {% for user in userss %}
+                                {% if user.ping_num == 2 and user.teachers == "S" %}
+                                    <button type="button" class="m-1 p-2 btn btn-danger col-2">{{ user.username }} / {{ user.ping_num }}  </button>
+                                        
+                                {% endif %}
+                                {% endfor %}
+                
+                                {% for user in userss %}
+                                {% if user.ping_num == 3 and user.teachers == "S" %}
+                                    <button type="button" class="m-1 p-2 btn btn-primary col-2">{{ user.username }} / {{ user.ping_num }}  </button>
+                                        
+                                {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    <script> 
+      // 함수 로그인시 입력창 삭제 및 로그인 된 모습 추가, id 와 pw값 받아서 저장하고 토큰복사
+            function ajax(){
+                $.post(
+                    "ajax",
+                    { id_:$("#id").val() , pw_: $("#pw").val() , csrfmiddlewaretoken: document.getElementsByName("csrfmiddlewaretoken")[0].value },
+                    function ( hell ){
+                        $("#id").remove()
+                        $("#pw").remove()
+                        $("#logins").remove()
+                        // $("#loginss").remove()
+
+                        $("#joins").remove()
+                        // $("#joinss").remove()
+
+                        $("#my_div").html(hell);
+                        $("#my_divs").html(hell);
+
+                        // alert(hell)
+                    }
+                );
+            }
+            function reload(){
+                location.reload()
+            }
+            
+    </script>
+<!-- <script>
+    function alertsfail(){
+        if  ( {{ er }} ) {
+        alert( {{ er }} )
+        }
+    }
+</script> -->
+    <div>
+        {% csrf_token %}
+    <!--  <input type="text" id="id" placeholder="아이디" name="user_id">
+        <input type="password" id="pw" placeholder="비밀번호" name="pwd">
+        <button type="button" onclick="ajax();">로그인</button> -->
+    </div>
+</body>

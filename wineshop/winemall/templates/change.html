@@ -1,0 +1,10 @@
+<form action="/happy/changed" method="post">
+	{% csrf_token %}
+
+회원정보수정
+      아이디: <input type="text" name="user_id">
+      비밀번호: <input type="password" name="pwd">
+      바꿀비밀번호: <input type="password" name="pw_changed">
+
+	<button>확인</button>
+</form>
