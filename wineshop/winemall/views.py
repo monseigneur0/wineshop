@@ -350,7 +350,7 @@ def wineup(request):
             print(extension)
             new_wine = Wine( wine_name = request.POST.get('wname'), wine_price = request.POST.get('wprice'), wine_discribe = request.POST.get('wdiscribe'),wine_photo = 'wineno' + str(w) + str(extension))
             new_wine.save()
-            with open(os.path.abspath('./member/static/wineno' + str(w) + str(extension)), 'wb+') as destination:
+            with open(os.path.abspath('./winemall/static/wineno' + str(w) + str(extension)), 'wb+') as destination:
                 for chunk in request.FILES['file'].chunks():
                     destination.write(chunk)
             return render(request, "uplaod.html", {'fil': request.FILES['file'].name })

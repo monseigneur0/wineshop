@@ -56,7 +56,7 @@
                             <form class="flex"> 
                                 <input class="form-control me-2" type="text" id="id" placeholder="아이디" name="user_id" aria-label="Search">
                                 <input class="form-control me-2" type="password" id="pw" placeholder="비밀번호" name="pwd">    
-                                <button class="btn btn-outline-danger" type="button" id="logins" onclick="ajax();">로그인</button>
+                                <a class="btn btn-outline-danger" type="button" id="logins"  href="/happy/login">로그인</a>
                                 <a class="btn btn-outline-danger" type="button" id="joins" href="/happy/join">회원가입</a>
                                 <div id="my_div"></div>
                             </form>
@@ -513,5 +513,23 @@
         <!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
         <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
         <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
+        <script>
+            // 함수 로그인시 입력창 삭제 및 로그인 된 모습 추가, id 와 pw값 받아서 저장하고 토큰복사
+            function ajax(){
+                $.post(
+                    "ajax",
+                    { id_:$("#id").val() , pw_: $("#pw").val() , csrfmiddlewaretoken: document.getElementsByName("csrfmiddlewaretoken")[0].value },
+                    function ( hell ){
+                        $("#id").remove()
+                        $("#pw").remove()
+                        $("#logins").remove()
+                        $("#joins").remove()
+                        $("#fruitajax").html(hell);
+                        // alert(hell)
+                    }
+                );
+            }
+        </script>
+
     </body>
 </html>
